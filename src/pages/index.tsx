@@ -1,19 +1,7 @@
-import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
-import Card from '../components/card/Card'
-import CardSection from '../components/card/CardSection'
 import Layout from '../components/layout/Layout'
-
-const RootIndexQuery = graphql`
-  query RootIndexQuery {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-  }
-`
+import Planner from '../components/planner/Planner'
+import './index.scss'
 
 const styles = {
   padding: '4vw',
@@ -21,17 +9,8 @@ const styles = {
 
 export default () => (
   <Layout>
-    <StaticQuery
-      query={RootIndexQuery}
-      // tslint:disable-next-line:jsx-no-lambda
-      render={data => (
-        <main style={styles}>
-          <Card
-            cardTitle={data.site.siteMetadata.title}
-            cardSection={data.site.siteMetadata.description}
-          />
-        </main>
-      )}
-    />
+    <main style={styles}>
+      <Planner />
+    </main>
   </Layout>
 )
