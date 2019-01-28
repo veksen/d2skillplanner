@@ -1,0 +1,50 @@
+{
+  "name": "gatsby-starter-typescript-scss-modules",
+  "description": "A no-fluff, minimal Gatsby starter with a clear separation of concerns.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie < 11",
+    "not op_mini all"
+  ],
+  "scripts": {
+    "dev": "npm run develop",
+    "develop": "gatsby develop --https",
+    "start": "npm run develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+  },
+  "dependencies": {
+    "@types/classnames": "^2.2.7",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-helmet": "^5.0.8",
+    "autoprefixer": "^9.4.6",
+    "browserslist": "^4.4.1",
+    "classnames": "^2.2.6",
+    "gatsby": "^2.0.98",
+    "gatsby-plugin-react-helmet": "^3.0.5",
+    "gatsby-plugin-sass": "^2.0.7",
+    "gatsby-plugin-typescript": "^2.0.3",
+    "node-sass": "^4.11.0",
+    "normalize.css": "^8.0.1",
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
+    "react-helmet": "^5.2.0",
+    "typescript": "^3.2.4"
+  },
+  "devDependencies": {
+    "prettier": "^1.16.1",
+    "stylelint": "^9.10.1",
+    "stylelint-config-prettier": "^4.0.0",
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-order": "^2.0.0",
+    "stylelint-scss": "^3.5.1",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-react": "^3.6.0"
+  }
+}
