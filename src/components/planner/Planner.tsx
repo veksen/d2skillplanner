@@ -14,6 +14,12 @@ interface IPlannerComponentState {
   skills: {
     [name: string]: number
   }
+  config: {
+    charLevel: number
+    skillBaseMax: number
+    skillBaseMin: number
+    skillQuests: number
+  }
 }
 
 class Planner extends React.Component<
@@ -21,23 +27,41 @@ class Planner extends React.Component<
   IPlannerComponentState
 > {
   public state: IPlannerComponentState = {
+    config: {
+      charLevel: 99,
+      skillBaseMax: 20,
+      skillBaseMin: 0,
+      skillQuests: 12,
+    },
     skills: {},
   }
 
   public increment = (skill: string) => {
     this.setState(prevState => {
-      const level = prevState.skills[skill] ? prevState.skills[skill] + 1 : 1
+      const newLevel = prevState.skills[skill] ? prevState.skills[skill] + 1 : 1
+
+      if (newLevel > prevState.config.skillBaseMax) {
+        return prevState
+      }
+
       return {
-        skills: { ...this.state.skills, [skill]: level },
+        ...prevState,
+        skills: { ...prevState.skills, [skill]: newLevel },
       }
     })
   }
 
   public decrement = (skill: string) => {
     this.setState(prevState => {
-      const level = prevState.skills[skill] ? prevState.skills[skill] - 1 : 0
+      const newLevel = prevState.skills[skill] ? prevState.skills[skill] - 1 : 0
+
+      if (newLevel < prevState.config.skillBaseMin) {
+        return prevState
+      }
+
       return {
-        skills: { ...this.state.skills, [skill]: level },
+        ...prevState,
+        skills: { ...prevState.skills, [skill]: newLevel },
       }
     })
   }
