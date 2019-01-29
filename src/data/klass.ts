@@ -29,4 +29,13 @@ export interface IKlass {
   trees: ITree[]
 }
 
-export const classes: IKlass[] = [bar, dru, nec, pal, sin, sor, zon]
+// export type classes
+export const classes: { [name: string]: IKlass } = {
+  bar,
+  dru,
+  nec,
+  pal,
+  sin,
+  sor,
+  zon,
+}

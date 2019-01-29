@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import * as React from 'react'
-import { ISkill, ITree } from '../../data/klass'
-import { sin } from '../../data/sin'
+import { IKlass, ITree } from '../../data/klass'
+import { classes } from '../../data/klass'
 import Klass from '../klass/Klass'
 import styles from './Planner.module.scss'
 
@@ -20,7 +20,9 @@ interface IPlannerComponentProps
   extends React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
-  > {}
+  > {
+  currentClass: string
+}
 
 interface IPlannerComponentState {
   levels: ILevels
@@ -29,7 +31,7 @@ interface IPlannerComponentState {
 
 export const findSkill = (skill: string, trees: ITree[]) => {
   const tree = trees.find(t => t.skills.hasOwnProperty(skill))
-  return tree!.skills[skill]
+  return tree ? tree.skills[skill] : null
 }
 
 class Planner extends React.Component<
@@ -46,15 +48,20 @@ class Planner extends React.Component<
     levels: {},
   }
 
+  public currentClassData = (): IKlass => {
+    return classes[this.props.currentClass]
+  }
+
   public canIncrement = (skill: string): boolean => {
     const minLevel = this.state.config.skillBaseMin
     const maxLevel = this.state.config.skillBaseMax
+    const currentClass = this.currentClassData()
     const skillLevel = this.state.levels[skill] || minLevel
     if (skillLevel === maxLevel) {
       return false
     }
 
-    const skillData = findSkill(skill, sin.trees)
+    const skillData = findSkill(skill, currentClass.trees)
     const { preReqs } = skillData
 
     if (!preReqs) {
@@ -69,12 +76,13 @@ class Planner extends React.Component<
 
   public canDecrement = (skill: string): boolean => {
     const minLevel = this.state.config.skillBaseMin
+    const currentClass = this.currentClassData()
     const skillLevel = this.state.levels[skill] || minLevel
     if (skillLevel === minLevel) {
       return false
     }
 
-    const skillData = findSkill(skill, sin.trees)
+    const skillData = findSkill(skill, currentClass.trees)
     const { preReqOf } = skillData
 
     if (!preReqOf) {
@@ -130,7 +138,7 @@ class Planner extends React.Component<
         <Klass
           config={this.state.config}
           levels={this.state.levels}
-          trees={sin.trees}
+          trees={this.currentClassData().trees}
           increment={this.increment}
           decrement={this.decrement}
         />

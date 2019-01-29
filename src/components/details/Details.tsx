@@ -50,9 +50,11 @@ class Details extends React.Component<IDetailsComponentProps> {
         continue
       }
 
-      const skill: ISkillData = findSkill(level, this.props.trees)
+      const skill = findSkill(level, this.props.trees)
 
-      skills.push(skill)
+      if (skill) {
+        skills.push(skill)
+      }
     }
 
     const highestLevel = () => {
