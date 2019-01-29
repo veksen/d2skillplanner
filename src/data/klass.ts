@@ -1,13 +1,15 @@
-interface ISkill {
-  [name: string]: {
-    preReqOf?: string[]
-    preReqs?: string[]
-    row: number
-    col: number
-  }
+export interface ISkillData {
+  preReqOf?: string[]
+  preReqs?: string[]
+  row: number
+  col: number
 }
 
-interface ITree {
+export interface ISkill {
+  [name: string]: ISkillData
+}
+
+export interface ITree {
   name: string
   skills: ISkill
 }

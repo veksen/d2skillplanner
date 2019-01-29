@@ -1,5 +1,8 @@
 import classNames from 'classnames'
 import * as React from 'react'
+import { ITree } from '../../data/klass'
+import Details from '../details/Details'
+import { IConfig, ILevels } from '../planner/Planner'
 import Skill from '../skill/Skill'
 import styles from './Klass.module.scss'
 
@@ -8,16 +11,18 @@ interface IKlassComponentProps
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
-  trees: any[]
-  levels: any
+  config: IConfig
+  levels: ILevels
+  trees: ITree[]
   increment: (skill: string) => void
   decrement: (skill: string) => void
 }
 
 const Klass: React.FunctionComponent<IKlassComponentProps> = ({
   className,
-  trees,
+  config,
   levels,
+  trees,
   increment,
   decrement,
   ...props
@@ -49,6 +54,7 @@ const Klass: React.FunctionComponent<IKlassComponentProps> = ({
         </div>
       )
     })}
+    <Details config={config} levels={levels} trees={trees} />
   </div>
 )
 

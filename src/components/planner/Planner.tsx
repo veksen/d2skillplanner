@@ -1,9 +1,20 @@
 import classNames from 'classnames'
 import * as React from 'react'
-import { ITree } from '../../data/klass'
+import { ISkill, ITree } from '../../data/klass'
 import { sin } from '../../data/sin'
 import Klass from '../klass/Klass'
 import styles from './Planner.module.scss'
+
+export interface IConfig {
+  charLevel: number
+  skillBaseMax: number
+  skillBaseMin: number
+  skillQuests: number
+}
+
+export interface ILevels {
+  [name: string]: number
+}
 
 interface IPlannerComponentProps
   extends React.DetailedHTMLProps<
@@ -12,18 +23,11 @@ interface IPlannerComponentProps
   > {}
 
 interface IPlannerComponentState {
-  skills: {
-    [name: string]: number
-  }
-  config: {
-    charLevel: number
-    skillBaseMax: number
-    skillBaseMin: number
-    skillQuests: number
-  }
+  levels: ILevels
+  config: IConfig
 }
 
-const findSkill = (skill: string, trees: ITree[]) => {
+export const findSkill = (skill: string, trees: ITree[]) => {
   const tree = trees.find(t => t.skills.hasOwnProperty(skill))
   return tree!.skills[skill]
 }
@@ -39,13 +43,13 @@ class Planner extends React.Component<
       skillBaseMin: 0,
       skillQuests: 12,
     },
-    skills: {},
+    levels: {},
   }
 
   public canIncrement = (skill: string): boolean => {
     const minLevel = this.state.config.skillBaseMin
     const maxLevel = this.state.config.skillBaseMax
-    const skillLevel = this.state.skills[skill] || minLevel
+    const skillLevel = this.state.levels[skill] || minLevel
     if (skillLevel === maxLevel) {
       return false
     }
@@ -58,14 +62,14 @@ class Planner extends React.Component<
     }
 
     return preReqs.every(preReq => {
-      const matchedPreReq = this.state.skills[preReq]
+      const matchedPreReq = this.state.levels[preReq]
       return !!matchedPreReq && matchedPreReq > 0
     })
   }
 
   public canDecrement = (skill: string): boolean => {
     const minLevel = this.state.config.skillBaseMin
-    const skillLevel = this.state.skills[skill] || minLevel
+    const skillLevel = this.state.levels[skill] || minLevel
     if (skillLevel === minLevel) {
       return false
     }
@@ -78,7 +82,7 @@ class Planner extends React.Component<
     }
 
     const preReqsHavePoints = preReqOf.every(preReq => {
-      const matchedPreReq = this.state.skills[preReq]
+      const matchedPreReq = this.state.levels[preReq]
       return !matchedPreReq || matchedPreReq < minLevel
     })
 
@@ -91,11 +95,11 @@ class Planner extends React.Component<
     }
 
     this.setState(prevState => {
-      const newLevel = prevState.skills[skill] ? prevState.skills[skill] + 1 : 1
+      const newLevel = prevState.levels[skill] ? prevState.levels[skill] + 1 : 1
 
       return {
         ...prevState,
-        skills: { ...prevState.skills, [skill]: newLevel },
+        levels: { ...prevState.levels, [skill]: newLevel },
       }
     })
   }
@@ -106,11 +110,11 @@ class Planner extends React.Component<
     }
 
     this.setState(prevState => {
-      const newLevel = prevState.skills[skill] ? prevState.skills[skill] - 1 : 0
+      const newLevel = prevState.levels[skill] ? prevState.levels[skill] - 1 : 0
 
       return {
         ...prevState,
-        skills: { ...prevState.skills, [skill]: newLevel },
+        levels: { ...prevState.levels, [skill]: newLevel },
       }
     })
   }
@@ -118,13 +122,17 @@ class Planner extends React.Component<
   public render() {
     const { children, className, ...props } = this.props
     return (
-      <div className={classNames([styles.Planner, className])} {...props}>
+      <div
+        className={classNames([styles.Planner, className, 'trees-wrapper'])}
+        {...props}
+      >
         planner
         <Klass
+          config={this.state.config}
+          levels={this.state.levels}
           trees={sin.trees}
           increment={this.increment}
           decrement={this.decrement}
-          levels={this.state.skills}
         />
         {children}
       </div>
