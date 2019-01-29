@@ -158,7 +158,7 @@ export const sin: IKlass = {
           col: 2,
         },
         bladeFury: {
-          preReqs: ['wakeOfFire', 'shockWeb'],
+          preReqs: ['wakeOfFire', 'bladeSentinel'],
           preReqOf: ['bladeShield'],
           row: 4,
           col: 3,
